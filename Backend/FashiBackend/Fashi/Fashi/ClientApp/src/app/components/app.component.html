@@ -1,100 +1,257 @@
 <div class="app-component app-container">
   <ngx-toasta></ngx-toasta>
-
-  <nav id="header" class="app-component navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-    <div class="container">
-      <a ngPreserveWhitespaces class="app-component navbar-brand" routerLink="/">
-        <img [src]="appLogo" class="d-inline-block align-top" alt="logo">
-        <span class="app-component appTitle">{{appTitle}}</span>
-      </a>
-      <button type="button" class="app-component navbar-toggler" data-toggle="collapse" data-target=".menuItemsContainer.app-component">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div *ngIf="isUserLoggedIn" class="app-component collapse navbar-collapse menuItemsContainer">
-        <ul class="app-component nav nav-pills flex-column flex-lg-row mr-auto">
-          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link" routerLink=""><i class="fa fa-home"></i></a>
-          </li>
-          <li class="nav-item" routerLinkActive="active" *ngIf="canViewCustomers">
-            <a class="nav-link" routerLink="/customers">{{'mainMenu.Customers' | translate}}</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active" *ngIf="canViewProducts">
-            <a class="nav-link" routerLink="/products">{{'mainMenu.Products' | translate}}</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active" *ngIf="canViewOrders">
-            <a class="nav-link" routerLink="/orders">{{'mainMenu.Orders' | translate}}</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/about">{{'mainMenu.About' | translate}}</a>
-          </li>
-        </ul>
-        <ul class="app-component nav nav-pills flex-column flex-lg-row mr-md-2">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/settings"><i class="fa fa-cog"></i></a>
-          </li>
-        </ul>
-        <span class="app-component navbar-text notifications-popup">{{'app.Welcome' | translate}}</span>
-        <a class="app-component nav-link user-name d-inline-block px-1" [popover]="popTemplate" (onHidden)="markNotificationsAsRead()" placement="bottom" [popoverTitle]="notificationsTitle" href="javascript:;" triggers="focus">
-          {{userName}}
-          <span *ngIf="newNotificationCount > 0" class="badge badge-pill badge-secondary">{{newNotificationCount}}</span>
-        </a>
-        <ng-template #popTemplate>
-          <notifications-viewer [isViewOnly]="true"></notifications-viewer>
-        </ng-template>
-        <span class="app-component navbar-text">, </span>
-        <ul class="app-component nav nav-pills ml-lg-2 flex-column flex-lg-row">
-          <li class="nav-item" (click)="logout()">
-            <a class="nav-link" href="javascript:;"><i class="fa fa-sign-out"></i> {{'mainMenu.Logout' | translate}}</a>
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="!isUserLoggedIn && router.isActive('/about', false)" class="app-component collapse navbar-collapse menuItemsContainer">
-        <ul class="app-component nav nav-pills flex-column flex-lg-row ml-auto">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/login"><i class="fa fa-sign-in"></i></a>
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="!isUserLoggedIn && !router.isActive('/about', false) || false" class="app-component collapse navbar-collapse menuItemsContainer">
-        <ul class="app-component nav nav-pills flex-column flex-lg-row ml-auto">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/about"><i class="fa fa-info-circle"></i></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div id="pre-bootstrap" *ngIf="!removePrebootScreen" [class.prebootShow.app-component]="!isAppLoaded" class="app-component prebootStep">
-    <div class="messaging">
-      <h1>
-        Loaded!
-      </h1>
-      <p>
-        QUICK APPLICATION SYSTEM - <span style="font-style:italic">quick</span>App &copy; <a href="https://www.ebenmonney.com">WWW.EBENMONNEY.COM</a>
-      </p>
-
-    </div>
+  <!-- Page Preloder -->
+  <div id="preloder">
+    <div class="loader"></div>
   </div>
+
+  <!-- Header Section Begin -->
+  <header class="header-section">
+    <div class="header-top">
+      <div class="container">
+        <div class="ht-left">
+          <div class="mail-service">
+            <i class=" fa fa-envelope"></i>
+            hello.colorlib@gmail.com
+          </div>
+          <div class="phone-service">
+            <i class=" fa fa-phone"></i>
+            +65 11.188.888
+          </div>
+        </div>
+        <div class="ht-right">
+          <a href="#" class="login-panel"><i class="fa fa-user"></i>Login</a>
+          <div class="lan-selector">
+            <select class="language_drop" name="countries" id="countries" style="width:300px;">
+              <option value='yt' data-image="assets/img/flag-1.jpg" data-imagecss="flag yt" data-title="English">English
+              </option>
+              <option value='yu' data-image="assets/img/flag-2.jpg" data-imagecss="flag yu" data-title="Bangladesh">
+                German </option>
+            </select>
+          </div>
+          <div class="top-social">
+            <a href="#"><i class="ti-facebook"></i></a>
+            <a href="#"><i class="ti-twitter-alt"></i></a>
+            <a href="#"><i class="ti-linkedin"></i></a>
+            <a href="#"><i class="ti-pinterest"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="inner-header">
+        <div class="row">
+          <div class="col-lg-2 col-md-2">
+            <div class="logo">
+              <a href="./index.html">
+                <img src="assets/img/logo.png" alt="">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7">
+            <div class="advanced-search">
+              <button type="button" class="category-btn">All Categories</button>
+              <div class="input-group">
+                <input type="text" placeholder="What do you need?">
+                <button type="button"><i class="ti-search"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 text-right col-md-3">
+            <ul class="nav-right">
+              <li class="heart-icon">
+                <a href="#">
+                  <i class="icon_heart_alt"></i>
+                  <span>1</span>
+                </a>
+              </li>
+              <li class="cart-icon">
+                <a href="#">
+                  <i class="icon_bag_alt"></i>
+                  <span>3</span>
+                </a>
+                <div class="cart-hover">
+                  <div class="select-items">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td class="si-pic"><img src="assets/img/select-product-1.jpg" alt=""></td>
+                          <td class="si-text">
+                            <div class="product-selected">
+                              <p>$60.00 x 1</p>
+                              <h6>Kabino Bedside Table</h6>
+                            </div>
+                          </td>
+                          <td class="si-close">
+                            <i class="ti-close"></i>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="si-pic"><img src="assets/img/select-product-2.jpg" alt=""></td>
+                          <td class="si-text">
+                            <div class="product-selected">
+                              <p>$60.00 x 1</p>
+                              <h6>Kabino Bedside Table</h6>
+                            </div>
+                          </td>
+                          <td class="si-close">
+                            <i class="ti-close"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="select-total">
+                    <span>total:</span>
+                    <h5>$120.00</h5>
+                  </div>
+                  <div class="select-button">
+                    <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                    <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
+                  </div>
+                </div>
+              </li>
+              <li class="cart-price">$150.00</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-item">
+      <div class="container">
+        <div class="nav-depart">
+          <div class="depart-btn">
+            <i class="ti-menu"></i>
+            <span>All departments</span>
+            <ul class="depart-hover">
+              <li class="active"><a href="#">Women’s Clothing</a></li>
+              <li><a href="#">Men’s Clothing</a></li>
+              <li><a href="#">Underwear</a></li>
+              <li><a href="#">Kid's Clothing</a></li>
+              <li><a href="#">Brand Fashion</a></li>
+              <li><a href="#">Accessories/Shoes</a></li>
+              <li><a href="#">Luxury Brands</a></li>
+              <li><a href="#">Brand Outdoor Apparel</a></li>
+            </ul>
+          </div>
+        </div>
+        <nav class="nav-menu mobile-menu">
+          <ul>
+            <li class="active"><a href="./index.html">Home</a></li>
+            <li><a href="./shop.html">Shop</a></li>
+            <li><a href="#">Collection</a>
+              <ul class="dropdown">
+                <li><a href="#">Men's</a></li>
+                <li><a href="#">Women's</a></li>
+                <li><a href="#">Kid's</a></li>
+              </ul>
+            </li>
+            <li><a href="./blog.html">Blog</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+            <li><a href="#">Pages</a>
+              <ul class="dropdown">
+                <li><a href="./blog-details.html">Blog Details</a></li>
+                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                <li><a href="./check-out.html">Checkout</a></li>
+                <li><a href="./faq.html">Faq</a></li>
+                <li><a href="./register.html">Register</a></li>
+                <li><a href="./login.html">Login</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+      </div>
+    </div>
+  </header>
+  <!-- Header End -->
 
   <main class="app-component container">
     <router-outlet></router-outlet>
     <div class="app-component footer-height"></div>
   </main>
 
-  <footer class="app-component footer fixed-bottom">
+  <!-- Footer Section Begin -->
+  <footer class="footer-section">
     <div class="container">
-      <p class="text-center text-muted">
-        <span style="font-style:italic">quick</span>App &copy; {{getYear()}}
-        <a href="https://www.ebenmonney.com" target="_blank">www.ebenmonney.com</a>
-        <!--<span class="small display-none">- Powered by <a href="https://www.ebenmonney.com/quickapp" target="_blank"><span style="font-style:italic">quick</span>App</a></span>-->
-      </p>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="footer-left">
+            <div class="footer-logo">
+              <a href="#"><img src="assets/img/footer-logo.png" alt=""></a>
+            </div>
+            <ul>
+              <li>Address: 60-49 Road 11378 New York</li>
+              <li>Phone: +65 11.188.888</li>
+              <li>Email: hello.colorlib@gmail.com</li>
+            </ul>
+            <div class="footer-social">
+              <a href="#"><i class="fa fa-facebook"></i></a>
+              <a href="#"><i class="fa fa-instagram"></i></a>
+              <a href="#"><i class="fa fa-twitter"></i></a>
+              <a href="#"><i class="fa fa-pinterest"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 offset-lg-1">
+          <div class="footer-widget">
+            <h5>Information</h5>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Checkout</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Serivius</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="footer-widget">
+            <h5>My Account</h5>
+            <ul>
+              <li><a href="#">My Account</a></li>
+              <li><a href="#">Contact</a></li>
+              <li><a href="#">Shopping Cart</a></li>
+              <li><a href="#">Shop</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="newslatter-item">
+            <h5>Join Our Newsletter Now</h5>
+            <p>Get E-mail updates about our latest shop and special offers.</p>
+            <form action="#" class="subscribe-form">
+              <input type="text" placeholder="Enter Your Mail">
+              <button type="button">Subscribe</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright-reserved">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="copyright-text">
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
+              with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                target="_blank">Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </div>
+            <div class="payment-pic">
+              <img src="assets/img/payment-method.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </footer>
+  <!-- Footer Section End -->
 
-  <div *ngIf="shouldShowLoginModal" class="modal fade login-control" bsModal #loginModal="bs-modal" (onShown)="onLoginModalShown()" (onHidden)="onLoginModalHidden()" (onHide)="onLoginModalHide()"
-       [config]="{backdrop: 'static'}" tabindex="-1">
+  <div *ngIf="shouldShowLoginModal" class="modal fade login-control" bsModal #loginModal="bs-modal"
+    (onShown)="onLoginModalShown()" (onHidden)="onLoginModalHidden()" (onHide)="onLoginModalHide()"
+    [config]="{backdrop: 'static'}" tabindex="-1">
     <div class="modal-dialog modal-lg h-75 d-flex flex-column justify-content-center my-0">
       <div class="modal-content">
         <div class="modal-body">

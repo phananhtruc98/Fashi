@@ -17,15 +17,15 @@ namespace Fashi.ViewModels
         public string Description { get; set; }
 
 
-        public static explicit operator PermissionViewModel(ApplicationPermission permission)
-        {
-            return new PermissionViewModel
-            {
-                Name = permission.Name,
-                Value = permission.Value,
-                GroupName = permission.GroupName,
-                Description = permission.Description
-            };
-        }
+        //public static explicit operator PermissionViewModel(ApplicationPermission permission)
+        //{
+        //    return new PermissionViewModel
+        //    {
+        //        Name = permission.Name,
+        //        Value = permission.Value,
+        //        GroupName = permission.GroupName,
+        //        Description = permission.Description
+        //    };
+        //}
     }
 }

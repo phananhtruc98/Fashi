@@ -63,6 +63,7 @@ import { UserPreferencesComponent } from './components/controls/user-preferences
 import { UsersManagementComponent } from './components/controls/users-management.component';
 import { RolesManagementComponent } from './components/controls/roles-management.component';
 import { RoleEditorComponent } from './components/controls/role-editor.component';
+import { CarouselComponent } from './components/shared/carousel/carousel.component';
 
 
 @NgModule({
@@ -110,7 +111,8 @@ import { RoleEditorComponent } from './components/controls/role-editor.component
     BootstrapToggleDirective,
     BootstrapSelectDirective,
     BootstrapDatepickerDirective,
-    GroupByPipe
+    GroupByPipe,
+    CarouselComponent
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },

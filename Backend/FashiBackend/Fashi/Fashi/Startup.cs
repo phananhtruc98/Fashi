@@ -6,7 +6,7 @@
 using AutoMapper;
 using DAL;
 using DAL.Core;
-using DAL.Core.Interfaces;
+//using DAL.Core.Interfaces;
 using DAL.Models;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +24,7 @@ using Fashi.Authorization;
 using Fashi.Helpers;
 using System;
 using System.Collections.Generic;
-using AppPermissions = DAL.Core.ApplicationPermissions;
+//using AppPermissions = DAL.Core.ApplicationPermissions;
 
 namespace Fashi
 {
@@ -48,9 +48,9 @@ namespace Fashi
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"], b => b.MigrationsAssembly("Fashi")));
 
             // add identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, ApplicationRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             // Configure Identity options and password complexity here
             services.Configure<IdentityOptions>(options =>
@@ -72,19 +72,19 @@ namespace Fashi
 
 
             // Adds IdentityServer.
-            services.AddIdentityServer()
-                // The AddDeveloperSigningCredential extension creates temporary key material for signing tokens.
-                // This might be useful to get started, but needs to be replaced by some persistent key material for production scenarios.
-                // See http://docs.identityserver.io/en/release/topics/crypto.html#refcrypto for more information.
-                .AddDeveloperSigningCredential()
-                .AddInMemoryPersistedGrants()
-                // To configure IdentityServer to use EntityFramework (EF) as the storage mechanism for configuration data (rather than using the in-memory implementations),
-                // see https://identityserver4.readthedocs.io/en/release/quickstarts/8_entity_framework.html
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients())
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddProfileService<ProfileService>();
+            //services.AddIdentityServer()
+            //    // The AddDeveloperSigningCredential extension creates temporary key material for signing tokens.
+            //    // This might be useful to get started, but needs to be replaced by some persistent key material for production scenarios.
+            //    // See http://docs.identityserver.io/en/release/topics/crypto.html#refcrypto for more information.
+            //    .AddDeveloperSigningCredential()
+            //    .AddInMemoryPersistedGrants()
+            //    // To configure IdentityServer to use EntityFramework (EF) as the storage mechanism for configuration data (rather than using the in-memory implementations),
+            //    // see https://identityserver4.readthedocs.io/en/release/quickstarts/8_entity_framework.html
+            //    .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
+            //    .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+            //    .AddInMemoryClients(IdentityServerConfig.GetClients())
+            //    .AddAspNetIdentity<ApplicationUser>()
+            //    .AddProfileService<ProfileService>();
 
 
             var applicationUrl = Configuration["ApplicationUrl"].TrimEnd('/');
@@ -98,17 +98,17 @@ namespace Fashi
                     options.ApiName = IdentityServerConfig.ApiName;
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Authorization.Policies.ViewAllUsersPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ViewUsers));
-                options.AddPolicy(Authorization.Policies.ManageAllUsersPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ManageUsers));
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(Authorization.Policies.ViewAllUsersPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ViewUsers));
+            //    options.AddPolicy(Authorization.Policies.ManageAllUsersPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ManageUsers));
 
-                options.AddPolicy(Authorization.Policies.ViewAllRolesPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ViewRoles));
-                options.AddPolicy(Authorization.Policies.ViewRoleByRoleNamePolicy, policy => policy.Requirements.Add(new ViewRoleAuthorizationRequirement()));
-                options.AddPolicy(Authorization.Policies.ManageAllRolesPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ManageRoles));
+            //    options.AddPolicy(Authorization.Policies.ViewAllRolesPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ViewRoles));
+            //    options.AddPolicy(Authorization.Policies.ViewRoleByRoleNamePolicy, policy => policy.Requirements.Add(new ViewRoleAuthorizationRequirement()));
+            //    options.AddPolicy(Authorization.Policies.ManageAllRolesPolicy, policy => policy.RequireClaim(ClaimConstants.Permission, AppPermissions.ManageRoles));
 
-                options.AddPolicy(Authorization.Policies.AssignAllowedRolesPolicy, policy => policy.Requirements.Add(new AssignRolesAuthorizationRequirement()));
-            });
+            //    options.AddPolicy(Authorization.Policies.AssignAllowedRolesPolicy, policy => policy.Requirements.Add(new AssignRolesAuthorizationRequirement()));
+            //});
 
 
             // Add cors
@@ -155,16 +155,16 @@ namespace Fashi
 
             // Repositories
             services.AddScoped<IUnitOfWork, HttpUnitOfWork>();
-            services.AddScoped<IAccountManager, AccountManager>();
+            //services.AddScoped<IAccountManager, AccountManager>();
 
             // Auth Handlers
-            services.AddSingleton<IAuthorizationHandler, ViewUserAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, ManageUserAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, ViewRoleAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, AssignRolesAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler, ViewUserAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler, ManageUserAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler, ViewRoleAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationHandler, AssignRolesAuthorizationHandler>();
 
             // DB Creation and Seeding
-            services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
+            //services.AddTransient<IDatabaseInitializer, DatabaseInitializer>();
         }
 
 
@@ -198,7 +198,7 @@ namespace Fashi
                 .AllowAnyHeader()
                 .AllowAnyMethod());
 
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseSwagger();
