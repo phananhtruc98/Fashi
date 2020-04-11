@@ -13,18 +13,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using DAL.Models.Interfaces;
+using Attribute = DAL.Models.Attribute;
 
 namespace DAL
 {
     public class ApplicationDbContext: DbContext 
     {
         public string CurrentUserId { get; set; }
-        //public DbSet<Customer> Customers { get; set; }
-        //public DbSet<ProductCategory> ProductCategories { get; set; }
-        //public DbSet<Product> Products { get; set; }
-        //public DbSet<Order> Orders { get; set; }
-        //public DbSet<OrderDetail> OrderDetails { get; set; }
-
+        public DbSet<UserType> UserType { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<ProductCategory> ProductCategory { get; set; }        
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderDetails> OrderDetail { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Attribute> Attribute { get; set; }
+        public DbSet<Banner> Banner { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<CartDetails> CartDetails { get; set; }
+        public DbSet<Promotion> Promotion { get; set; }
+        public DbSet<PromotionMethod> PromotionMethod { get; set; }
+        public DbSet<ProductDetails> ProductDetails { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
@@ -34,41 +44,51 @@ namespace DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            //const string priceDecimalType = "decimal(18,2)";
+                
+            builder.Entity<User>().Property(u => u.FirstName).IsRequired().HasMaxLength(100);
+            builder.Entity<User>().Property(u => u.LastName).IsRequired().HasMaxLength(100);
+            builder.Entity<User>().HasIndex(u => new { u.FirstName, u.LastName });
+            builder.Entity<User>().Property(u => u.Email).HasMaxLength(100);
+            builder.Entity<User>().Property(u => u.MobileNumber).IsUnicode(false).HasMaxLength(30);
+            builder.Entity<User>().HasMany(u => u.Addresses).WithOne(a => a.User).HasForeignKey(a => a.UserId);
+            builder.Entity<User>().HasOne(u => u.Cart).WithOne(c => c.User).HasForeignKey<User>(u => u.CartId);
+            builder.Entity<User>().HasMany(u => u.Orders).WithOne(o => o.User).HasForeignKey(o => o.UserId);
 
-            //builder.Entity<ApplicationUser>().HasMany(u => u.Claims).WithOne().HasForeignKey(c => c.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-            //builder.Entity<ApplicationUser>().HasMany(u => u.Roles).WithOne().HasForeignKey(r => r.UserId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Address>().Property(a => a.Name).IsRequired().HasMaxLength(100);
+            builder.Entity<Address>().Property(a => a.Ward).HasMaxLength(100);
+            builder.Entity<Address>().Property(a => a.District).HasMaxLength(100);
+            builder.Entity<Address>().Property(a => a.City).HasMaxLength(100);
+            builder.Entity<Address>().Property(a => a.Country).HasMaxLength(100);
+            //builder.Entity<Address>().HasOne(a => a.User).WithMany(u => u.Addresses);
 
-            //builder.Entity<ApplicationRole>().HasMany(r => r.Claims).WithOne().HasForeignKey(c => c.RoleId).IsRequired().OnDelete(DeleteBehavior.Cascade);
-            //builder.Entity<ApplicationRole>().HasMany(r => r.Users).WithOne().HasForeignKey(r => r.RoleId).IsRequired().OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Banner>().Property(b => b.Name).IsRequired();
 
-            //builder.Entity<Customer>().Property(c => c.Name).IsRequired().HasMaxLength(100);
-            //builder.Entity<Customer>().HasIndex(c => c.Name);
-            //builder.Entity<Customer>().Property(c => c.Email).HasMaxLength(100);
-            //builder.Entity<Customer>().Property(c => c.PhoneNumber).IsUnicode(false).HasMaxLength(30);
-            //builder.Entity<Customer>().Property(c => c.City).HasMaxLength(50);
-            //builder.Entity<Customer>().ToTable($"App{nameof(this.Customers)}");
+            builder.Entity<Category>().Property(c => c.Name).HasMaxLength(500);
 
-            //builder.Entity<ProductCategory>().Property(p => p.Name).IsRequired().HasMaxLength(100);
-            //builder.Entity<ProductCategory>().Property(p => p.Description).HasMaxLength(500);
-            //builder.Entity<ProductCategory>().ToTable($"App{nameof(this.ProductCategories)}");
+            builder.Entity<PromotionMethod>().Property(c => c.Name).HasMaxLength(500);
+            builder.Entity<PromotionMethod>().HasMany(pm => pm.Promotions).WithOne(p => p.PromotionMethod).HasForeignKey(p => p.PromotionMethodId);
 
-            //builder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(100);
-            //builder.Entity<Product>().HasIndex(p => p.Name);
-            //builder.Entity<Product>().Property(p => p.Description).HasMaxLength(500);
-            //builder.Entity<Product>().Property(p => p.Icon).IsUnicode(false).HasMaxLength(256);
-            //builder.Entity<Product>().HasOne(p => p.Parent).WithMany(p => p.Children).OnDelete(DeleteBehavior.Restrict);
-            //builder.Entity<Product>().ToTable($"App{nameof(this.Products)}");
-            //builder.Entity<Product>().Property(p => p.BuyingPrice).HasColumnType(priceDecimalType);
-            //builder.Entity<Product>().Property(p => p.SellingPrice).HasColumnType(priceDecimalType);
+            builder.Entity<Product>().Property(p => p.Name).HasMaxLength(500);
+            builder.Entity<Product>().Property(p => p.Price).IsUnicode(false).HasMaxLength(500);
+            builder.Entity<Product>().Property(p => p.Summary).HasMaxLength(500);
 
-            //builder.Entity<Order>().Property(o => o.Comments).HasMaxLength(500);
-            //builder.Entity<Order>().ToTable($"App{nameof(this.Orders)}");
-            //builder.Entity<Order>().Property(p => p.Discount).HasColumnType(priceDecimalType);
+            builder.Entity<ProductCategory>().HasOne(pc => pc.Product).WithMany(p => p.ProductCategories).HasForeignKey(pc => pc.ProductId);
+            builder.Entity<ProductCategory>().HasOne(pc => pc.Category).WithMany(p => p.ProductCategories).HasForeignKey(pc => pc.CategoryId);
 
-            //builder.Entity<OrderDetail>().ToTable($"App{nameof(this.OrderDetails)}");
-            //builder.Entity<OrderDetail>().Property(p => p.UnitPrice).HasColumnType(priceDecimalType);
-            //builder.Entity<OrderDetail>().Property(p => p.Discount).HasColumnType(priceDecimalType);
+            builder.Entity<Attribute>().Property(a => a.Name).IsRequired();
+
+            builder.Entity<Attribute>().HasMany(pd => pd.ProductDetails).WithOne(a => a.Attribute).HasForeignKey(a => a.AttributeId);
+
+            builder.Entity<CartDetails>().HasOne(cd => cd.Cart).WithMany(c => c.CartDetails).HasForeignKey(cd => cd.CartId);
+            builder.Entity<CartDetails>().HasOne(cd => cd.ProductDetails).WithMany(pd => pd.CartDetails).HasForeignKey(cd => cd.ProductDetailsId);
+
+            builder.Entity<Promotion>().Property(c => c.Name).HasMaxLength(500);
+
+            builder.Entity<OrderDetails>().HasOne(od => od.Order).WithMany(c => c.OrderDetails).HasForeignKey(od => od.OrderId);
+            builder.Entity<OrderDetails>().HasOne(od => od.ProductDetails).WithMany(c => c.OrderDetails).HasForeignKey(od => od.ProductDetailsId);
+            builder.Entity<OrderDetails>().HasOne(od => od.Promotion).WithMany(p => p.OrderDetails).HasForeignKey(od => od.PromotionId);
+            
+            builder.Entity<UserType>().HasMany(up => up.Users).WithOne(u => u.UserType).HasForeignKey(up => up.UserTypeId);
         }
 
 

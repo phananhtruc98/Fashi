@@ -13,6 +13,8 @@ namespace DAL.Models
 {
     public class AuditableEntity : IAuditableEntity
     {
+        [Key]
+        public int Id { get; set; }
         [MaxLength(256)]
         public string CreatedBy { get; set; }
         [MaxLength(256)]
